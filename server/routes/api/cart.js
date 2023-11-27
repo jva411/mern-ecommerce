@@ -96,3 +96,4 @@ const decreaseQuantity = products => {
 };
 
 module.exports = router;
+module.exports.decreaseQuantity = decreaseQuantity;
