@@ -51,7 +51,7 @@ describe('POST /add', () => {
 
   it('deve retornar um erro 400 se houver um erro ao adicionar um novo carrinho', async () => {
     const mockedSave = Cart.prototype.save
-    mockedSave.mockReturnValue({id: 'cart123'})
+    mockedSave.mockRejectedValueOnce(new Error('Erro ao adicionar carrinho'))
 
     const response = await request(app).post('/add').send({
       products: [
@@ -60,11 +60,10 @@ describe('POST /add', () => {
           quantity: 2
         }
       ]
-    }).expect(200)
+    }).expect(400)
 
     expect(response.body).toEqual({
-      success: true,
-      cartId: 'cart123'
+      error: 'Your request could not be processed. Please try again.'
     })
     expect(mockedSave).toHaveBeenCalled()
   })
